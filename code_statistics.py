@@ -231,3 +231,13 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+cd ${WORKSPACE}/work
+#echo - git log --since="${START_DATE}" --until="${END_DATE}" --pretty=tformat: --numstat -- '*.c' '*.h' | grep -vE '/\*/|/\/\*/|^\s*$/'  | grep -vE 'Lib' | grep -vE 'AutoSar/BSW' | grep -vE 'AutoSar/Config' | grep -vE 'AutoSar/MCAL' | grep -vE 'Vendor*'  | awk '{ add += $1; subs += $2; loc += $1 + $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }'
+addline=`git log --since="${START_DATE}" --until="${END_DATE}" --pretty=tformat: --numstat -- '*.c' '*.h' | grep -vE '/\*/|/\/\*/|^\s*$/'  | grep -vE 'Lib' | grep -vE 'AutoSar/BSW' | grep -vE 'AutoSar/Config' | grep -vE 'AutoSar/MCAL' | grep -vE 'Vendor*'  | awk '{ add += $1} END { printf "%s\n", add}'`
+delline=`git log --since="${START_DATE}" --until="${END_DATE}" --pretty=tformat: --numstat -- '*.c' '*.h' | grep -vE '/\*/|/\/\*/|^\s*$/'  | grep -vE 'Lib' | grep -vE 'AutoSar/BSW' | grep -vE 'AutoSar/Config' | grep -vE 'AutoSar/MCAL' | grep -vE 'Vendor*'  | awk '{ subs += $2} END { printf "%s\n",subs}'`
+echo $addline $delline
+
+cd ${WORKSPACE}/script
+python3 code_statistics.py -p ${Project_Name} -b ${BRANCH} -s ${START_DATE} -e ${END_DATE} -a ${addline} -d ${delline}
