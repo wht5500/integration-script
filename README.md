@@ -1,2 +1,2 @@
-# itegration-script
+# integration-script
 shells, python and bat
